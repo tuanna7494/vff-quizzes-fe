@@ -4,6 +4,7 @@ export * from './Layout';
 export * from './Navbar';
 export * from './Notications';
 export * from './RHForm';
+export * from './EnhanceDropZone';
 export * from './EnhanceImage';
 export * from './EnhanceModal';
 export * from './EnhanceAvatar';

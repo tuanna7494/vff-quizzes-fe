@@ -15,7 +15,7 @@ import {
   RHFSwitch,
   RHFTextarea,
   RHFTextInput,
-  RHFUploadFile
+  RHFUpload
 } from 'components';
 import { BUTTON } from 'constants/common';
 import { isEmpty, isObject } from 'lodash';
@@ -102,7 +102,6 @@ export const QuizCreate: React.FC = ({}) => {
     setValue,
     setError,
     clearErrors,
-    unregister,
     formState: { errors, isDirty, isSubmitting },
     handleSubmit
   } = useForm<IQuiz>({
@@ -111,7 +110,6 @@ export const QuizCreate: React.FC = ({}) => {
   });
   const titleWatch = watch().title;
   const values = getValues();
-  console.log(values.results);
 
   useEffect(() => {
     if (isEmpty(titleWatch)) return;
@@ -123,12 +121,12 @@ export const QuizCreate: React.FC = ({}) => {
    */
 
   useEffect(() => {
-    if (isEmpty(values.thumbnail) || errors?.thumbnail) return;
+    if (isEmpty(values.thumbnail)) return;
     if (isObject(values.thumbnail)) {
       dispatch(
         actionsApp.upload({
           token: token,
-          data: values.thumbnail[0]
+          data: values.thumbnail
         })
       )
         .unwrap()
@@ -139,14 +137,7 @@ export const QuizCreate: React.FC = ({}) => {
           enqueueSnackbar('Upload failed!', { variant: 'error' });
         });
     }
-  }, [
-    dispatch,
-    token,
-    values.thumbnail,
-    setValue,
-    enqueueSnackbar,
-    errors.thumbnail
-  ]);
+  }, [dispatch, token, values.thumbnail, setValue, enqueueSnackbar]);
 
   const resetQuizAction = {
     isShow: false,
@@ -261,18 +252,27 @@ export const QuizCreate: React.FC = ({}) => {
             <Grid item xs={12}>
               <FormGroup>
                 <InputLabel htmlFor="thumnail">Quiz Thumbnail</InputLabel>
-                <RHFUploadFile
+                <RHFUpload
+                  id="thumnail"
                   name="thumbnail"
-                  error={errors!.thumbnail}
-                  {...{
-                    register,
-                    unregister,
-                    setValue,
-                    errors,
-                    watch
-                  }}
+                  control={control}
+                  setError={setError}
+                  previousThumb={editQuizz.thumbnail}
                 />
               </FormGroup>
+              {/* <RHFUpload2
+                control={control}
+                label="Quiz Thumbnail"
+                name="thumbnail"
+                setValue={setValue}
+                setError={setError}
+                watch={watch}
+                clearErrors={clearErrors}
+                maxSize={2097152}
+                multiple={false}
+                isEdit={!isAdd}
+                previousThumb={!isAdd && values.thumbnail}
+              /> */}
             </Grid>
             <Grid item xs={12}>
               <FormGroup>
@@ -388,7 +388,6 @@ export const QuizCreate: React.FC = ({}) => {
                 control,
                 watch,
                 handleSubmit,
-                unregister,
                 register,
                 errors,
                 setValue,

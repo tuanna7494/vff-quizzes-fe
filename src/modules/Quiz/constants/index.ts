@@ -1,7 +1,3 @@
-export const ACCEPT_FILES =
-  process.env.uploadAcceptType || 'image/jpeg, image/png';
-export const LIMIT_FILE_SIZE = (process.env.uploadSizeLimit as any) || 2097152;
-
 export const QUIZ_API = '/quizz';
 
 export const QUIZ_ACTION = {

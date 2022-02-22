@@ -12,8 +12,8 @@ export default function QuizCreateModal({
   getValues,
   control,
   watch,
-  errors,
-  unregister,
+  setError,
+  clearErrors,
   register,
   setValue
 }) {
@@ -29,11 +29,10 @@ export default function QuizCreateModal({
       <FormResult
         {...{
           control,
-          register,
-          unregister,
+          watch,
           setValue,
-          errors,
-          watch
+          setError,
+          clearErrors
         }}
       />
 

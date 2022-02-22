@@ -1,10 +1,6 @@
 {
   "name": "good-meta",
-  "version": "1.0.0",
-  "engines": {
-    "node": "16.x",
-    "npm": "8.x"
-  },
+  "version": "0.1.0",
   "private": true,
   "moduleResolution": "node",
   "scripts": {

@@ -91,11 +91,6 @@ export default function FormAnswer({
     );
   }, [enqueueSnackbar]);
 
-  /**
-   * handleOnChange
-   * @param e
-   * @param index
-   */
   const handleOnChange = (e, index) => {
     const file = e.target.files;
     const currSize = file[0].size;

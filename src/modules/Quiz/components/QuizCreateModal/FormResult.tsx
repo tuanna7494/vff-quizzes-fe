@@ -1,23 +1,24 @@
 import React, { useEffect } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { Button, Divider, FormGroup, Grid, Typography } from '@mui/material';
-import { RHFTextarea, RHFTextInput, RHFUploadFile } from 'components';
+import { RHFTextarea, RHFTextInput, RHFUpload } from 'components';
 import { BUTTON } from 'constants/common';
 import { isEmpty, isObject } from 'lodash';
 import { actionsApp } from 'modules/App';
 import { useAppDispatch } from 'common/hooks';
 import { getToken } from 'common/localStorage';
+import { useSelectQuizActions } from 'modules/Quiz';
 import { useSnackbar } from 'notistack';
 
 export default function FormResult({
   control,
-  register,
-  unregister,
+  watch,
   setValue,
-  errors,
-  watch
+  setError,
+  clearErrors
 }) {
   const dispatch = useAppDispatch();
+  const { isAdd } = useSelectQuizActions();
   const { enqueueSnackbar } = useSnackbar();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -34,56 +35,29 @@ export default function FormResult({
       };
     });
 
-  const handleUploadApi = (file, index) => {
-    if (isEmpty(file) || errors?.results?.thumbnail) return;
-
+  useEffect(() => {
+    if (isEmpty(resultFields)) return;
     const token = getToken();
 
-    dispatch(
-      actionsApp.upload({
-        token: token,
-        data: file[0]
-      })
-    )
-      .unwrap()
-      .then(
-        ({ data }) => data && setValue(`results[${index}].thumbnail`, data.path)
-      )
-      .catch(err => {
-        enqueueSnackbar('Upload failed!', { variant: 'error' });
-      });
-  };
-
-  // useEffect(() => {
-  //   if (!resultFields) return;
-  //   const token = getToken();
-
-  //   resultFields.map((item, index) => {
-  //     if (errors?.results?.thumbnail) return;
-  //     if (isObject(item.thumbnail)) {
-  //       dispatch(
-  //         actionsApp.upload({
-  //           token: token,
-  //           data: item.thumbnail[0]
-  //         })
-  //       )
-  //         .unwrap()
-  //         .then(
-  //           ({ data }) =>
-  //             data && setValue(`results[${index}].thumbnail`, data.path)
-  //         )
-  //         .catch(err => {
-  //           enqueueSnackbar('Upload failed!', { variant: 'error' });
-  //         });
-  //     }
-  //   });
-  // }, [
-  //   dispatch,
-  //   setValue,
-  //   resultFields,
-  //   enqueueSnackbar,
-  //   errors?.results?.thumbnail
-  // ]);
+    resultFields.map((item, index) => {
+      if (isObject(item.thumbnail)) {
+        dispatch(
+          actionsApp.upload({
+            token: token,
+            data: item.thumbnail
+          })
+        )
+          .unwrap()
+          .then(
+            ({ data }) =>
+              data && setValue(`results[${index}].thumbnail`, data.path)
+          )
+          .catch(err => {
+            enqueueSnackbar('Upload failed!', { variant: 'error' });
+          });
+      }
+    });
+  }, [dispatch, setValue, resultFields, enqueueSnackbar]);
 
   return (
     <div className="result">
@@ -129,24 +103,27 @@ export default function FormResult({
               />
             </Grid>
             <Grid item xs={12}>
-              <RHFUploadFile
+              {/* <RHFUpload2
+                control={control}
                 name={`results.${index}.thumbnail`}
-                error={
-                  errors &&
-                  errors.results?.length &&
-                  errors.results[index] &&
-                  errors.results[index].thumbnail
-                }
-                {...{
-                  register,
-                  unregister,
-                  setValue,
-                  watch
-                }}
-                onUploadApi={file => handleUploadApi(file, index)}
-              />
+                setValue={setValue}
+                setError={setError}
+                watch={watch}
+                clearErrors={clearErrors}
+                maxSize={2097152}
+                multiple={false}
+                isEdit={!isAdd}
+                previousThumb={!isAdd && item.thumbnail}
+              /> */}
+              <FormGroup>
+                <RHFUpload
+                  id={`result${index}-thumbnail`}
+                  name={`results.${index}.thumbnail`}
+                  control={control}
+                  previousThumb={!isAdd && item.thumbnail}
+                />
+              </FormGroup>
             </Grid>
-
             {resultFields?.length !== 1 && (
               <Grid item xs={12} mt={2}>
                 <Button
