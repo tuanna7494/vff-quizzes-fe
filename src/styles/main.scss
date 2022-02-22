@@ -1,0 +1,168 @@
+.text-center {
+  text-align: center;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.quizz-contain {
+  .question {
+    border-radius: 5px;
+    h1 {
+      font-size: 60px;
+      text-align: center;
+      padding: 0 10px;
+      line-height: 1.2;
+    }
+  }
+  .answer {
+    width: calc(50% - 13px);
+    margin-bottom: 20px;
+    cursor: pointer;
+    min-height: 330px;
+    position: relative;
+  }
+
+  .qa-card {
+    margin-bottom: 200px;
+  }
+
+  .result {
+    background-image: linear-gradient(
+      180deg,
+      #e40c78 0%,
+      #e32 51.44%,
+      #e40c78 100%
+    );
+    h4 {
+      margin: 0 10px;
+      color: white;
+    }
+
+    .quizzIcon {
+      width: 40px;
+      height: 40px;
+    }
+    .quizz-content {
+      background-color: white;
+      margin: 20px;
+      border-radius: 5px;
+    }
+  }
+}
+
+.overlay-white {
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.3;
+  transition: 0.5 all ease-in;
+}
+.overlay-white:hover {
+  opacity: 0;
+}
+
+.card-answer {
+  position: relative;
+  transition: ease-in-out 0.35s;
+  opacity: 1;
+
+  &:not(.has-selected):hover {
+    opacity: 0.98;
+    .card-answer-text {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+  }
+  &:not(.selected).has-selected {
+    opacity: 0.35;
+  }
+  &-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    transition: ease-in-out 0.35s;
+    opacity: 1;
+  }
+  &-image {
+    height: 100%;
+    opacity: 1;
+
+    &:hover {
+      cursor: pointer;
+      transition: ease-in-out 0.35s;
+      opacity: 0.9;
+    }
+  }
+}
+
+.text-truncate {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  overflow: hidden;
+}
+/* ==========================================================================
+   #Module Thumbnail
+   ========================================================================== */
+.thumbnail {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-bottom: 0;
+  overflow: hidden;
+
+  &-centered {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+
+    > img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      object-position: center;
+      margin-bottom: 0;
+    }
+  }
+
+  &--1x1 {
+    padding-bottom: 100% !important;
+  }
+
+  &--4x3 {
+    padding-bottom: 75% !important;
+  }
+
+  &--3x4 {
+    padding-bottom: 133% !important;
+  }
+
+  &--6x4 {
+    padding-bottom: 62.5% !important;
+  }
+
+  &--16x9 {
+    padding-bottom: 56.25% !important;
+  }
+
+  &--24x9 {
+    padding-bottom: 37.5% !important;
+  }
+}
